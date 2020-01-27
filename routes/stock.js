@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
     let spans = [];
 
     $('span', html).each(function (i, e) {
-      spans[i] = $(this).text().replace(/\s/g,'');
+      spans[i] = $(this).text().replace(/\s|%|-/g,'').replace(/,/g,'.');
     });
 
     console.debug(spans);
