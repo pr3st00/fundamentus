@@ -32,7 +32,7 @@ router.get('/', function (req, res, next) {
 
     })
     .catch(function (err) {
-      res.status(500)
+      res.status(500);
       res.send({ error: err })
     });
 
