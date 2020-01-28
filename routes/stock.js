@@ -28,6 +28,7 @@ router.get('/', function (req, res, next) {
         eve: spans[112],
         pl: spans[48],
         pvp: spans[56],
+        lpa: spans[51],
       });
 
     })
