@@ -22,8 +22,8 @@ router.get('/', function (req, res, next) {
 
       res.send({
         ticker: ticker,
-        pvp: spans[41],
-        dy: spans[33],
+        pvp: spans[64],
+        dy: spans[56],
       });
 
     })
