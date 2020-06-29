@@ -22,8 +22,8 @@ router.get('/', function (req, res, next) {
 
       res.send({
         ticker: ticker,
-        pvp: spans[68],
-        dy: spans[60],
+        pvp: spans[spans.findIndex(e => e =="P/VP") + 1],
+        dy: spans[spans.findIndex(e => e =="DividendYield") + 1],
       });
 
     })
