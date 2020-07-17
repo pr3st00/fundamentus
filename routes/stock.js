@@ -9,7 +9,14 @@ router.get('/', function (req, res, next) {
   const ticker = req.query.ticker;
   const url = baseUrl + ticker;
 
-  rp(url)
+  const options = {
+    url: url,
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0'
+    }
+  };
+
+  rp(options)
     .then(function (html) {
 
       let spans = [];
