@@ -29,13 +29,13 @@ router.get('/', function (req, res, next) {
 
       res.send({
         ticker: ticker,
-        dy: spans[104],
-        roe: spans[107],
-        roic: spans[99],
-        eve: spans[112],
-        pl: spans[48],
-        pvp: spans[56],
-        lpa: spans[51],
+        dy: spans[spans.findIndex(e => e =="Div.Yield") + 1],
+        roe: spans[spans.findIndex(e => e =="ROE") + 1],
+        roic: spans[spans.findIndex(e => e =="ROIC") + 1],
+        eve: spans[spans.findIndex(e => e =="EV/EBITDA") + 1],
+        pl: spans[spans.findIndex(e => e =="P/L") + 1],
+        pvp: spans[spans.findIndex(e => e =="P/VP") + 1],
+        lpa: spans[spans.findIndex(e => e =="LPA") + 1],
       });
 
     })
