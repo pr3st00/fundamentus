@@ -1,0 +1,9 @@
+arm_container:
+  image: node:10
+
+test_task:
+  node_modules_cache:
+    folder: node_modules
+    fingerprint_script: cat package-lock.json
+    populate_script: npm ci
+  test_script: npm test
