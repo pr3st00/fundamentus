@@ -1,8 +1,9 @@
 #!/bin/bash
 
-#
-# Runs the fundamentus container
-#
+# --------------------------------------------------------
+# Docker helper script
+# Author: Fernando Costa de Almeida
+# --------------------------------------------------------
 
 CONTAINER_NAME=fundamentus
 
