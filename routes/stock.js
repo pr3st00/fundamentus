@@ -8,6 +8,7 @@ router.get('/', function (req, res, next) {
 
   const ticker = req.query.ticker;
   const url = baseUrl + ticker;
+  const cotacaoRegex = /Cota.*o/g;
 
   crawler(ticker, url, (ticker, spans) => {
 	  return {
@@ -19,6 +20,7 @@ router.get('/', function (req, res, next) {
         pl: spans[spans.findIndex(e => e =="P/L") + 1],
         pvp: spans[spans.findIndex(e => e =="P/VP") + 1],
         lpa: spans[spans.findIndex(e => e =="LPA") + 1],
+        price: spans[spans.findIndex(e => e.match(cotacaoRegex)) + 1],
       };
   })
   .then(function (returnValue) {
