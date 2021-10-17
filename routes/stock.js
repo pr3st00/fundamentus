@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const $ = require('cheerio');
 const crawler = require('../lib/crawler.js');
 
 const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
@@ -16,7 +17,18 @@ function sendResponse(ticker, res) {
   const url = baseUrl + ticker;
   const cotacaoRegex = /Cota.*o/g;
 
-  crawler(ticker, url, (ticker, spans) => {
+  const options = { usecloudscraper : true }
+
+  crawler(ticker, url, (ticker, html) => {
+    let spans = [];
+
+    $('span', html).each(function (i, e) {
+      spans[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
+    });
+
+    console.debug("Returning value from web call: ");
+    console.debug(spans);
+
     return {
       ticker: ticker,
       dy: spans[spans.findIndex(e => e == "Div.Yield") + 1],
@@ -28,7 +40,7 @@ function sendResponse(ticker, res) {
       lpa: spans[spans.findIndex(e => e == "LPA") + 1],
       price: spans[spans.findIndex(e => e.match(cotacaoRegex)) + 1],
     };
-  })
+  }, options)
     .then(function (returnValue) {
       res.send(returnValue);
     })

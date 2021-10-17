@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const $ = require('cheerio');
 const crawler = require('../lib/crawler.js');
 
 const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
@@ -15,7 +16,16 @@ router.get('/:ticker', function (req, res, next) {
 function sendResponse(ticker, res) {
   const url = baseUrl + ticker;
 
-  crawler(ticker, url, (ticker, spans) => {
+  crawler(ticker, url, (ticker, html) => {
+    let spans = [];
+
+    $('span', html).each(function (i, e) {
+      spans[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
+    });
+
+    console.debug("Returning value from web call: ");
+    console.debug(spans);
+
     return {
       ticker: ticker,
       pvp: spans[spans.findIndex(e => e == "P/VP") + 1],
