@@ -16,6 +16,11 @@ router.get('/:ticker', function (req, res, next) {
 function sendResponse(ticker, res) {
   const url = baseUrl + ticker;
 
+  const options = { 
+    usecloudscraper : false,
+    debug : false, 
+  }
+
   crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
@@ -26,9 +31,6 @@ function sendResponse(ticker, res) {
     $('span').each(function (i, e) {
       spans[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
     });
-
-    //console.debug("Returning value from web call: ");
-    //console.debug(spans);
 
     return {
       ticker: ticker,
@@ -41,9 +43,17 @@ function sendResponse(ticker, res) {
       res.send(returnValue);
     })
     .catch(function (err) {
-      res.status(500);
-      res.send({ error: err })
-    });
+      let statusCode = err.statusCode || 500;
+      res.status(statusCode);
+      console.error(err);
+
+      let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
+
+      res.send({ 
+        message: "Request failed",
+        error: errorMessage,
+      });
+    }, options);
 
 }
 
