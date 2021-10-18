@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const crawler = require('../lib/crawler.js');
 
 const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
@@ -20,14 +20,16 @@ function sendResponse(ticker, res) {
   const options = { usecloudscraper : true }
 
   crawler(ticker, url, (ticker, html) => {
+    let $ = cheerio.load(html);
+
     let spans = [];
 
-    $('span', html).each(function (i, e) {
+    $('span').each(function (i, e) {
       spans[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
     });
 
-    console.debug("Returning value from web call: ");
-    console.debug(spans);
+    //console.debug("Returning value from web call: ");
+    //console.debug(spans);
 
     return {
       ticker: ticker,

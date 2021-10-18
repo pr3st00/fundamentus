@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const $ = require('cheerio');
+const cheerio = require('cheerio');
 const crawler = require('../lib/crawler.js');
 
 const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
@@ -17,19 +17,24 @@ function sendResponse(ticker, res) {
   const url = baseUrl + ticker;
 
   crawler(ticker, url, (ticker, html) => {
+    let $ = cheerio.load(html);
+
+    let price = $("#stock-price span").first().text().replace(/,/g, '.').replace(/ /g, '').replace(/R\$/g, '').replace(/\n/g, '');
+
     let spans = [];
 
-    $('span', html).each(function (i, e) {
+    $('span').each(function (i, e) {
       spans[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
     });
 
-    console.debug("Returning value from web call: ");
-    console.debug(spans);
+    //console.debug("Returning value from web call: ");
+    //console.debug(spans);
 
     return {
       ticker: ticker,
       pvp: spans[spans.findIndex(e => e == "P/VP") + 1],
       dy: spans[spans.findIndex(e => e == "DividendYield") + 1],
+      price: price,
     };
   })
     .then(function (returnValue) {
