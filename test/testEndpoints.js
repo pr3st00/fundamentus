@@ -32,12 +32,18 @@ let fiiTests = describe("Fii endpoint testing", () => {
         .get("/fii/hglg11")
         .end((err, response) => {
             if (err) return done(err);
-            
-            ["ticker","pvp","dy","price"].forEach((ele) => {
-                response.body.should.have.property(ele);
+
+            let numberElements = ["pvp","dy","price"];
+
+            numberElements.forEach((ele) => {
+                response.body.should.have.property(ele).which.match(/([0-9]+[.])?[0-9]+/);
             });
 
+            response.body.should.have.property("ticker");
             response.body.ticker.should.equal("hglg11");
+
+            Object.keys(response.body).should.have.lengthOf(numberElements.length + 1);
+
             done();
         })
     });
@@ -73,11 +79,17 @@ let stockTests = describe("Stocks endpoint testing", () => {
         .end((err, response) => {
             if (err) return done(err);
             
-            ["ticker","dy","roe","roic","eve","pl","pvp","lpa","price"].forEach((ele) => {
-                response.body.should.have.property(ele);
+            let numberElements = ["dy","roe","roic","eve","pl","pvp","lpa","price"];
+            
+            numberElements.forEach((ele) => {
+                response.body.should.have.property(ele).which.match(/([0-9]+[.])?[0-9]+/);
             });
 
+            response.body.should.have.property("ticker");
             response.body.ticker.should.equal("abev3");
+
+            Object.keys(response.body).should.have.length(numberElements.length + 1);
+
             done();
         })
     });
