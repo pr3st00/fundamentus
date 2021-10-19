@@ -26,7 +26,7 @@ function sendResponse(ticker, res) {
     let $ = cheerio.load(html);
 
     let price = $("#stock-price span").first().text().replace(/,/g, '.').replace(/ /g, '').replace(/R\$/g, '').replace(/\n/g, '');
-    let actives = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g,'').replace(/ /g,'');
+    let properties = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g,'').replace(/ /g,'');
 
     let spans = [];
 
@@ -39,7 +39,7 @@ function sendResponse(ticker, res) {
       pvp: spans[spans.findIndex(e => e == "P/VP") + 1],
       dy: spans[spans.findIndex(e => e == "DividendYield") + 1],
       sector: spans[spans.findIndex(e => e == "Segmento") + 1],
-      actives: actives || NA,
+      properties: properties || NA,
       price: price,
     };
   })
