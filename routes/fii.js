@@ -36,6 +36,7 @@ function sendResponse(ticker, res) {
       ticker: ticker,
       pvp: spans[spans.findIndex(e => e == "P/VP") + 1],
       dy: spans[spans.findIndex(e => e == "DividendYield") + 1],
+      sector: spans[spans.findIndex(e => e == "Segmento") + 1],
       price: price,
     };
   })

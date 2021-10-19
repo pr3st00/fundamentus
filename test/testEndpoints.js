@@ -34,15 +34,19 @@ let fiiTests = describe("Fii endpoint testing", () => {
             if (err) return done(err);
 
             let numberElements = ["pvp","dy","price"];
+            let stringElements = ["ticker", "sector"];
 
             numberElements.forEach((ele) => {
                 response.body.should.have.property(ele).which.match(/([0-9]+[.])?[0-9]+/);
             });
 
-            response.body.should.have.property("ticker");
+            stringElements.forEach((ele) => {
+                response.body.should.have.property(ele).which.is.a('string');
+            });
+
             response.body.ticker.should.equal("hglg11");
 
-            Object.keys(response.body).should.have.lengthOf(numberElements.length + 1);
+            Object.keys(response.body).should.have.lengthOf(numberElements.length + stringElements.length);
 
             done();
         })
@@ -80,15 +84,19 @@ let stockTests = describe("Stocks endpoint testing", () => {
             if (err) return done(err);
             
             let numberElements = ["dy","roe","roic","eve","pl","pvp","lpa","price"];
+            let stringElements = ["ticker"];
             
             numberElements.forEach((ele) => {
                 response.body.should.have.property(ele).which.match(/([0-9]+[.])?[0-9]+/);
             });
 
-            response.body.should.have.property("ticker");
+            stringElements.forEach((ele) => {
+                response.body.should.have.property(ele).which.is.a('string');
+            });
+
             response.body.ticker.should.equal("abev3");
 
-            Object.keys(response.body).should.have.length(numberElements.length + 1);
+            Object.keys(response.body).should.have.length(numberElements.length + stringElements.length);
 
             done();
         })
