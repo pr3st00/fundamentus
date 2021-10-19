@@ -51,7 +51,7 @@ function sendResponse(ticker, res) {
       res.status(statusCode);
       console.error(err);
 
-      let errorMessage = statusCode == 404 ? "Stock not found" : "Unexpected error";
+      let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
 
       res.send({ 
         message: "Request failed",
