@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const crawler = require('../lib/crawler.js');
 
 const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
+const NA = "N/A";
 
 router.get('/', function (req, res, next) {
   sendResponse(req.query.ticker, res);
@@ -25,6 +26,7 @@ function sendResponse(ticker, res) {
     let $ = cheerio.load(html);
 
     let price = $("#stock-price span").first().text().replace(/,/g, '.').replace(/ /g, '').replace(/R\$/g, '').replace(/\n/g, '');
+    let actives = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g,'').replace(/ /g,'');
 
     let spans = [];
 
@@ -37,6 +39,7 @@ function sendResponse(ticker, res) {
       pvp: spans[spans.findIndex(e => e == "P/VP") + 1],
       dy: spans[spans.findIndex(e => e == "DividendYield") + 1],
       sector: spans[spans.findIndex(e => e == "Segmento") + 1],
+      actives: actives || NA,
       price: price,
     };
   })
