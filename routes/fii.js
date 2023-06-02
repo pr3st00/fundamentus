@@ -28,17 +28,17 @@ function sendResponse(ticker, res) {
     let price = $("#stock-price span").first().text().replace(/,/g, '.').replace(/ /g, '').replace(/R\$/g, '').replace(/\n/g, '');
     let properties = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g,'').replace(/ /g,'');
 
-    let spans = [];
+    let p = [];
 
-    $('span').each(function (i, e) {
-      spans[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
+    $('p').each(function (i, e) {
+      p[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
     });
 
     return {
       ticker: ticker,
-      pvp: spans[spans.findIndex(e => e == "P/VP") + 1],
-      dy: spans[spans.findIndex(e => e == "DividendYield") + 1],
-      sector: spans[spans.findIndex(e => e == "Segmento") + 1],
+      pvp: p[p.findIndex(e => e == "P/VP") + 1],
+      dy: p[p.findIndex(e => e.match(/DY.*Dividendo/)) + 1],
+      sector: p[p.findIndex(e => e == "Segmento") + 1],
       properties: properties || NA,
       price: price,
     };

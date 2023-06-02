@@ -22,10 +22,13 @@ function build() {
 }
 
 function run() {
-	echo "[INFO] Running container [${CONTAINER_NAME}]"
-	docker run --restart always -d -p ${SERVER_PORT}:${SERVER_PORT} \
-	 --name $CONTAINER_NAME ${DOCKER_USER}/${CONTAINER_NAME}
+        echo "[INFO] Running container [${CONTAINER_NAME}]"
+        docker run --restart unless-stopped \
+         -d -p ${SERVER_PORT}:${SERVER_PORT} \
+         --network=$NETWORK \
+         --name $CONTAINER_NAME ${DOCKER_USER}/${CONTAINER_NAME}
 }
+
 
 function start() {
 	echo "[INFO] Starting container [${CONTAINER_NAME}]"
