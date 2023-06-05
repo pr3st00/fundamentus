@@ -31,13 +31,13 @@ function sendResponse(ticker, res) {
     let p = [];
 
     $('p').each(function (i, e) {
-      p[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
+      p[i] = $(this).text().replace(/%|-/g, '').replace(/,/g, '.');
     });
 
     return {
       ticker: ticker,
-      pvp: p[p.findIndex(e => e == "P/VP") + 1],
-      dy: p[p.findIndex(e => e.match(/DY.*Dividendo/)) + 1],
+      pvp: p[p.findIndex(e => e == "P/VP") + 1].replace(/\s/g, ''),
+      dy: p[p.findIndex(e => e.match(/DY.*Dividendo/)) + 1].replace(/\s/g, ''),
       sector: p[p.findIndex(e => e == "Segmento") + 1],
       properties: properties || NA,
       price: price,
