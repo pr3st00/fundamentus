@@ -7,7 +7,7 @@
     "test": "mocha --timeout 10000"
   },
   "dependencies": {
-    "body-parser": "~1.18.2",
+    "body-parser": "~1.20.2",
     "cheerio": "^1.0.0-rc.3",
     "cloudscraper-promise": "^1.0.0",
     "cookie-parser": "~1.4.3",
