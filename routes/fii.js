@@ -23,7 +23,7 @@ function sendResponse(ticker, res) {
   const url = baseUrl + ticker;
 
   const options = { 
-    usecloudscraper : false,
+    usecloudscraper : true,
     debug : false, 
   }
 
