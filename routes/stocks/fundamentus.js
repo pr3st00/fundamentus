@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cheerio = require('cheerio');
-const crawler = require('../lib/crawler.js');
+const crawler = require('../../lib/crawler.js');
 
 const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
 
@@ -17,9 +17,9 @@ function sendResponse(ticker, res) {
   const url = baseUrl + ticker;
   const cotacaoRegex = /Cota.*o/g;
 
-  const options = { 
-    usecloudscraper : true,
-    debug : false, 
+  const options = {
+    usecloudscraper: true,
+    debug: false,
   }
 
   crawler(ticker, url, (ticker, html) => {
@@ -53,11 +53,11 @@ function sendResponse(ticker, res) {
 
       let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
 
-      res.send({ 
+      res.send({
         message: "Request failed",
         error: errorMessage,
       });
-   });
+    });
 }
 
 module.exports = router;
