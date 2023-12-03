@@ -33,7 +33,7 @@ let fiiTests = describe("Fii endpoint testing", () => {
             .end((err, response) => {
                 if (err) return done(err);
 
-                let numberElements = ["value", "price", "pvp", "dy", "dy12m"];
+                let numberElements = ["value", "price", "pvp", "dy", "dy12m", "vacancy"];
                 let stringElements = ["ticker", "sector", "cnpj", "properties"];
 
                 numberElements.forEach((ele) => {
