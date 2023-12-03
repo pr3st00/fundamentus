@@ -33,8 +33,8 @@ let fiiTests = describe("Fii endpoint testing", () => {
             .end((err, response) => {
                 if (err) return done(err);
 
-                let numberElements = ["pvp", "dy", "price"];
-                let stringElements = ["ticker", "sector", "properties"];
+                let numberElements = ["value", "price", "pvp", "dy", "dy12m"];
+                let stringElements = ["ticker", "sector", "cnpj", "properties"];
 
                 numberElements.forEach((ele) => {
                     response.body.should.have.property(ele).which.match(/([0-9]+[.])?[0-9]+/);
