@@ -28,6 +28,10 @@ function sendResponse(ticker, res) {
   crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
+    if ($('h1:contains("Nenhum papel encontrado")').text()) {
+      return null;
+    }
+
     let spans = [];
 
     $('span').each(function (i, e) {

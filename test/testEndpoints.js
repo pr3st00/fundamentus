@@ -5,6 +5,20 @@ let chaiHttp = require("chai-http");
 chai.should();
 chai.use(chaiHttp);
 
+let miscTests = describe("Miscelaneous testing", () => {
+
+    it("Should return alive status", (done) => {
+        chai.request(server)
+            .get("/health")
+            .end((err, response) => {
+                if (err) return done(err);
+                response.should.have.status(200);
+                response.body.should.have.property("status").which.equal('alive');
+                done();
+            })
+    });
+});
+
 let fiiTests = describe("Fii endpoint testing", () => {
 
     it("Should return sucessfull status", (done) => {
@@ -23,6 +37,8 @@ let fiiTests = describe("Fii endpoint testing", () => {
             .end((err, response) => {
                 if (err) return done(err);
                 response.should.have.status(404);
+                response.body.should.have.property("message").which.equal('Request failed');
+                response.body.should.have.property("error").which.equal('Ticker not found');
                 done();
             })
     });
@@ -72,7 +88,9 @@ let stockTests = describe("Stocks endpoint testing", () => {
             .get("/stock/nonexistent")
             .end((err, response) => {
                 if (err) return done(err);
-                response.should.have.status(200);
+                response.should.have.status(404);
+                response.body.should.have.property("message").which.equal('Request failed');
+                response.body.should.have.property("error").which.equal('Ticker not found');
                 done();
             })
     });

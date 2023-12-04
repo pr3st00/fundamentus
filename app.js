@@ -7,8 +7,9 @@ const bodyParser = require('body-parser');
 
 const fundsexplorer = require('./routes/fii/fundsexplorer');
 const investidor10 = require('./routes/fii/investidor10');
-
 const stock = require('./routes/stocks/fundamentus');
+
+const health = require('./routes/health');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/fii', investidor10);
 app.use('/fii2', fundsexplorer);
 app.use('/stock', stock);
+app.use('/health', health);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
