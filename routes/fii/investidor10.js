@@ -6,6 +6,8 @@ const formatter = require('../../lib/formatter.js');
 
 const baseUrl = 'https://investidor10.com.br/fiis/';
 
+const CACHE_PREFIX = "fii";
+
 const NA = "N/A";
 const ONE = "1.0";
 
@@ -31,6 +33,7 @@ function sendResponse(ticker, res) {
   const options = {
     usecloudscraper: true,
     debug: false,
+    cachePrefix: CACHE_PREFIX,
   }
 
   crawler(ticker, url, (ticker, html) => {
@@ -59,7 +62,7 @@ function sendResponse(ticker, res) {
       cnpj: formatter.formatText(spans[spans.findIndex(e => e.match(CNPJ)) + 1]),
       properties: properties || NA,
     };
-  })
+  }, options)
     .then(function (returnValue) {
       res.send(returnValue);
     })
@@ -74,8 +77,7 @@ function sendResponse(ticker, res) {
         message: "Request failed",
         error: errorMessage,
       });
-    }, options);
-
+    });
 }
 
 module.exports = router;

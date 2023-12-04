@@ -6,6 +6,8 @@ const formatter = require('../../lib/formatter.js');
 
 const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
 
+const CACHE_PREFIX = "fii";
+
 const NA = "N/A";
 const PVP = "P/VP";
 const SEGMENT = "Segmento";
@@ -26,8 +28,9 @@ function sendResponse(ticker, res) {
   const options = {
     usecloudscraper: true,
     debug: false,
+    cachePrefix: CACHE_PREFIX,
   }
-
+  
   crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
