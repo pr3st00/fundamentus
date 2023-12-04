@@ -6,6 +6,8 @@ const formatter = require('../../lib/formatter.js');
 
 const baseUrl = 'https://investidor10.com.br/fiis/';
 
+const CACHE_PREFIX = "fii";
+
 const NA = "N/A";
 const ONE = "1.0";
 
@@ -33,7 +35,9 @@ function sendResponse(ticker, res) {
     debug: false,
   }
 
-  crawler(ticker, url, (ticker, html) => {
+  let cacheKey = CACHE_PREFIX + ":" + ticker;
+
+  crawler(cacheKey, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
     let properties = NA;

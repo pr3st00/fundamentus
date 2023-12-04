@@ -6,6 +6,8 @@ const formatter = require('../../lib/formatter.js');
 
 const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
 
+const CACHE_PREFIX = "fii";
+
 const NA = "N/A";
 const PVP = "P/VP";
 const SEGMENT = "Segmento";
@@ -27,8 +29,10 @@ function sendResponse(ticker, res) {
     usecloudscraper: true,
     debug: false,
   }
+  
+  let cacheKey = CACHE_PREFIX + ":" + ticker;
 
-  crawler(ticker, url, (ticker, html) => {
+  crawler(cacheKey, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
     let properties = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g, '').replace(/ /g, '');

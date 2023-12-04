@@ -5,6 +5,8 @@ const crawler = require('../../lib/crawler.js');
 
 const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
 
+const CACHE_PREFIX = "stock";
+
 router.get('/', function (req, res, next) {
   sendResponse(req.query.ticker, res);
 });
@@ -22,7 +24,9 @@ function sendResponse(ticker, res) {
     debug: false,
   }
 
-  crawler(ticker, url, (ticker, html) => {
+  let cacheKey = CACHE_PREFIX + ":" + ticker;
+
+  crawler(cacheKey, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
     let spans = [];
