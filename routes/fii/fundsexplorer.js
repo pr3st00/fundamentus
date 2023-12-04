@@ -28,11 +28,10 @@ function sendResponse(ticker, res) {
   const options = {
     usecloudscraper: true,
     debug: false,
+    cachePrefix: CACHE_PREFIX,
   }
   
-  let cacheKey = CACHE_PREFIX + ":" + ticker;
-
-  crawler(cacheKey, url, (ticker, html) => {
+  crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
     let properties = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g, '').replace(/ /g, '');

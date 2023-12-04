@@ -33,11 +33,10 @@ function sendResponse(ticker, res) {
   const options = {
     usecloudscraper: true,
     debug: false,
+    cachePrefix: CACHE_PREFIX,
   }
 
-  let cacheKey = CACHE_PREFIX + ":" + ticker;
-
-  crawler(cacheKey, url, (ticker, html) => {
+  crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
     let properties = NA;
@@ -63,7 +62,7 @@ function sendResponse(ticker, res) {
       cnpj: formatter.formatText(spans[spans.findIndex(e => e.match(CNPJ)) + 1]),
       properties: properties || NA,
     };
-  })
+  }, options)
     .then(function (returnValue) {
       res.send(returnValue);
     })
@@ -78,8 +77,7 @@ function sendResponse(ticker, res) {
         message: "Request failed",
         error: errorMessage,
       });
-    }, options);
-
+    });
 }
 
 module.exports = router;
