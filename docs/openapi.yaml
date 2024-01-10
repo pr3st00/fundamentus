@@ -1,0 +1,124 @@
+swagger: '2.0'
+info:
+  description: 'Retrieves Brazilian stocks & Fiis (Brazilian reits counterparts) financial data.'
+  version: 1.0.0
+  title: Fundamentus
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: fernando.c.almeida@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: fundamentus.onrender.com
+basePath: /
+schemes:
+  - https
+paths:
+  /fii/{ticker}:
+    get:
+      tags:
+        - fii
+      summary: Retrieves market data for any Brazilian FII.
+      description: 'Retrieves market data for any Brazilian FII.'
+      operationId: fii
+      produces:
+        - application/json
+      parameters:
+        - name: ticker
+          in: path
+          description: Ticker name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/FiiData'
+        '404':
+          description: Ticker not found
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /stock/{ticker}:
+    get:
+      tags:
+        - stock
+      summary: Retrieves market data for any Brazilian stock.
+      description: 'Retrieves market data for any Brazilian stock.'
+      operationId: stock
+      produces:
+        - application/json
+      parameters:
+        - name: ticker
+          in: path
+          description: Ticker name
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/StockData'
+        '404':
+          description: Ticker not found
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  FiiData:
+    type: object
+    properties:
+      ticker:
+        type: string
+      dy:
+        type: string
+      roe:
+        type: string
+      roic:
+        type: string      
+      eve:
+        type: string
+      pl:
+        type: string
+      pvp:
+        type: string
+      lpa:
+        type: string
+      price:
+        type: string
+  StockData:
+    type: object
+    properties:
+      ticker:
+        type: string
+      value:
+        type: string
+      price:
+        type: string
+      pvp:
+        type: string
+      dy:
+        type: string
+      dy12m:
+        type: string
+      vacancy:
+        type: string
+      sector:
+        type: string
+      cnpj:
+        type: string
+      properties:
+        type: string
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+      error:
+        type: string
