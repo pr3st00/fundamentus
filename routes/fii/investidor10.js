@@ -39,11 +39,15 @@ function sendResponse(ticker, res) {
   crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
 
-    let properties = NA;
     let spans = [];
+    let properties = 0;
 
     $('span').each(function (i, e) {
       spans[i] = $(this).text();
+    });
+
+    $('span.count').each(function (i, e) {
+      properties += parseInt($(this).text());
     });
 
     let price = formatter.formatNumber(spans[spans.findIndex(e => e.match(PRICE)) + 1]);
@@ -60,7 +64,7 @@ function sendResponse(ticker, res) {
       vacancy: (vacancy / 100).toFixed(2),
       sector: formatter.formatText(spans[spans.findIndex(e => e.match(SEGMENT)) + 1]),
       cnpj: formatter.formatText(spans[spans.findIndex(e => e.match(CNPJ)) + 1]),
-      properties: properties || NA,
+      properties: properties.toString() || "N/A",
     };
   }, options)
     .then(function (returnValue) {

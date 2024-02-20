@@ -30,7 +30,7 @@ Retrieves Brazilian stocks & Fiis (Brazilian reits counterparts) financial data.
       "vacancy": "0.10",
       "sector": "Logístico / Indústria / Galpões",
       "cnpj": "11.728.688/0001-47",
-      "properties": "N/A"
+      "properties": "24"
     }
 ```
   
