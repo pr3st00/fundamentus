@@ -19,6 +19,7 @@ const VALUE = "VAL. PATRIMONIAL";
 const CNPJ = "CNPJ";
 const VACANCY = "VACÂNCIA";
 const TAX = "TAXA DE ADMIN";
+const LAST_DIVIDEND = "ÚLTIMO RENDIMENTO";
 
 router.get('/', function (req, res, next) {
   sendResponse(req.query.ticker, res);
@@ -52,8 +53,9 @@ function sendResponse(ticker, res) {
     });
 
     let price = formatter.formatNumber(spans[spans.findIndex(e => e.match(PRICE)) + 1]);
-    let last_dividend = formatter.formatNumber(spans[spans.findIndex(e => e.match("ÚLTIMO RENDIMENTO")) + 1]);
+    let last_dividend = formatter.formatNumber(spans[spans.findIndex(e => e.match(LAST_DIVIDEND)) + 1]);
     let vacancy = formatter.formatNumber(spans[spans.findIndex(e => e.match(VACANCY)) + 1]);
+    let tax = spans[spans.findIndex(e => e.match(TAX)) + 1].split(' ')[0];
 
     return {
       ticker: ticker,
@@ -63,7 +65,7 @@ function sendResponse(ticker, res) {
       dy: ((last_dividend / price) * 100).toFixed(2),
       dy12m: formatter.formatNumber(spans[spans.findIndex(e => e.match(DY)) + 1]),
       vacancy: (vacancy / 100).toFixed(2),
-      tax: formatter.formatNumber(spans[spans.findIndex(e => e.match(TAX)) + 1]),
+      tax: formatter.formatNumber(tax),
       sector: formatter.formatText(spans[spans.findIndex(e => e.match(SEGMENT)) + 1]),
       cnpj: formatter.formatText(spans[spans.findIndex(e => e.match(CNPJ)) + 1]),
       properties: properties.toString() || "N/A",
