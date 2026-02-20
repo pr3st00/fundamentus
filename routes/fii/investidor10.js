@@ -55,7 +55,7 @@ function sendResponse(ticker, res) {
     let price = formatter.formatNumber(spans[spans.findIndex(e => e.match(PRICE)) + 1]);
     let last_dividend = formatter.formatNumber(spans[spans.findIndex(e => e.match(LAST_DIVIDEND)) + 1]);
     let vacancy = formatter.formatNumber(spans[spans.findIndex(e => e.match(VACANCY)) + 1]);
-    let tax = spans[spans.findIndex(e => e.match(TAX)) + 1].split(' ')[0];
+    let tax = spans[spans.findIndex(e => e.match(TAX)) + 1].split("%")[0];
 
     return {
       ticker: ticker,
