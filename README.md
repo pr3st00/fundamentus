@@ -22,32 +22,33 @@ Retrieves Brazilian stocks & Fiis (Brazilian reits counterparts) financial data.
 ```javascript
     {
       "ticker": "hglg11",
-      "value": "152.83",
-      "price": "160.79",
-      "pvp": "1.05",
-      "dy": "0.68",
-      "dy12m": "9.17",
-      "vacancy": "0.10",
+      "value": "166.58",
+      "price": "157.23",
+      "pvp": "0.94",
+      "dy": "0.70",
+      "dy12m": "8.40",
+      "vacancy": "0.02",
+      "tax": "0.60",
       "sector": "Logístico / Indústria / Galpões",
       "cnpj": "11.728.688/0001-47",
-      "properties": "24"
-    }
+      "properties": "28"
+    } 
 ```
   
 - Stock Data
 
 ```javascript
     {
-      "ticker": "ABEV3",
-      "dy": "5.4",
-      "roe": "16.7",
-      "roic": "16.5",
-      "eve": "9.00",
-      "pl": "14.71",
-      "pvp": "2.46",
-      "lpa": "0.96",
-      "price": "14.08"
-    }
+      "ticker": "abev3",
+      "dy": "6.9",
+      "roe": "17.6",
+      "roic": "19.8",
+      "eve": "8.93",
+      "pl": "16.44",
+      "pvp": "2.90",
+      "lpa": "0.98",
+      "price": "16.17"
+   }
 ```
 
 ## License
