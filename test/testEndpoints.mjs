@@ -47,6 +47,19 @@ let fiiTests = describe("Fii endpoint testing", () => {
             })
     });
 
+    it("Should return 400 status", (done) => {
+        request.execute(app)
+            .get("/fii")
+            .end((err, response) => {
+                expect(err).to.be.null;
+                expect(response).to.be.json;
+                expect(response).to.have.status(400);
+                expect(response.body).to.have.property("message").which.equal('Missing required query parameter');
+                expect(response.body).to.have.property("error").which.equal('The ticker parameter is required.');
+                done();
+            })
+    });
+
     it("Response should have all indicators", (done) => {
         request.execute(app)
             .get("/fii/hglg11")
@@ -98,6 +111,19 @@ let stockTests = describe("Stocks endpoint testing", () => {
                 expect(response).to.be.json;
                 expect(response.body).to.have.property("message").which.equal('Request failed');
                 expect(response.body).to.have.property("error").which.equal('Ticker not found');
+                done();
+            })
+    });
+
+    it("Should return 400 status", (done) => {
+        request.execute(app)
+            .get("/stock")
+            .end((err, response) => {
+                expect(err).to.be.null;
+                expect(response).to.be.json;
+                expect(response).to.have.status(400);
+                expect(response.body).to.have.property("message").which.equal('Missing required query parameter');
+                expect(response.body).to.have.property("error").which.equal('The ticker parameter is required.');
                 done();
             })
     });

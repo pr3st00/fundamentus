@@ -3,6 +3,7 @@ const router = express.Router();
 const cheerio = require('cheerio');
 const crawler = require('../../lib/crawler.js');
 const formatter = require('../../lib/formatter.js');
+const errorBuilder = require('../../lib/errorBuilder.js');
 
 const baseUrl = 'https://investidor10.com.br/fiis/';
 
@@ -22,6 +23,10 @@ const TAX = "TAXA DE ADMIN";
 const LAST_DIVIDEND = "ÚLTIMO RENDIMENTO";
 
 router.get('/', function (req, res, next) {
+  if (!req.query.ticker) {
+    return res.status(400).send(errorBuilder.buildMissingParameterResponse("ticker"));
+  }
+
   sendResponse(req.query.ticker, res);
 });
 
@@ -30,6 +35,7 @@ router.get('/:ticker', function (req, res, next) {
 });
 
 function sendResponse(ticker, res) {
+  ticker = ticker.toLowerCase();
   const url = baseUrl + ticker;
 
   const options = {
@@ -76,15 +82,11 @@ function sendResponse(ticker, res) {
     })
     .catch(function (err) {
       let statusCode = err.statusCode || 500;
-      res.status(statusCode);
       console.error(err);
 
       let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
 
-      res.send({
-        message: "Request failed",
-        error: errorMessage,
-      });
+      res.status(statusCode).send(errorBuilder.buildErrorResponse("Request failed", errorMessage));
     });
 }
 

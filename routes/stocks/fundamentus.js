@@ -2,12 +2,22 @@ const express = require('express');
 const router = express.Router();
 const cheerio = require('cheerio');
 const crawler = require('../../lib/crawler.js');
+const errorBuilder = require('../../lib/errorBuilder.js');
 
 const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
 
 const CACHE_PREFIX = "stock";
 
+const NOT_FOUND_MESSAGES = [
+  "Nenhum papel encontrado",
+  "Selecione o Papel",
+];
+
 router.get('/', function (req, res, next) {
+  if (!req.query.ticker) {
+    return res.status(400).send(errorBuilder.buildMissingParameterResponse("ticker"));
+  }
+
   sendResponse(req.query.ticker, res);
 });
 
@@ -16,6 +26,7 @@ router.get('/:ticker', function (req, res, next) {
 });
 
 function sendResponse(ticker, res) {
+  ticker = ticker.toLowerCase();
   const url = baseUrl + ticker;
   const cotacaoRegex = /Cota.*o/g;
 
@@ -27,8 +38,10 @@ function sendResponse(ticker, res) {
 
   crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
+    
+    const headingText = $('h1').text();
 
-    if ($('h1:contains("Nenhum papel encontrado")').text()) {
+    if (NOT_FOUND_MESSAGES.some(msg => headingText.includes(msg))) {
       return null;
     }
 
@@ -55,15 +68,11 @@ function sendResponse(ticker, res) {
     })
     .catch(function (err) {
       let statusCode = err.statusCode || 500;
-      res.status(statusCode);
       console.error(err);
 
       let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
 
-      res.send({
-        message: "Request failed",
-        error: errorMessage,
-      });
+      res.status(statusCode).send(errorBuilder.buildErrorResponse("Request failed", errorMessage));
     });
 }
 
