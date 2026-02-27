@@ -7,11 +7,7 @@ const errorBuilder = require('../../lib/errorBuilder.js');
 const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
 
 const CACHE_PREFIX = "stock";
-
-const NOT_FOUND_MESSAGES = [
-  "Nenhum papel encontrado",
-  "Selecione o Papel",
-];
+const TICKER_SPAN_HEADER = "Papel";
 
 router.get('/', function (req, res, next) {
   if (!req.query.ticker) {
@@ -39,17 +35,15 @@ function sendResponse(ticker, res) {
   crawler(ticker, url, (ticker, html) => {
     let $ = cheerio.load(html);
     
-    const headingText = $('h1').text();
-
-    if (NOT_FOUND_MESSAGES.some(msg => headingText.includes(msg))) {
-      return null;
-    }
-
     let spans = [];
 
     $('span').each(function (i, e) {
       spans[i] = $(this).text().replace(/\s|%|-/g, '').replace(/,/g, '.');
     });
+
+    if (!spans.includes(TICKER_SPAN_HEADER)) {  
+      return null;
+    }
 
     return {
       ticker: ticker,
