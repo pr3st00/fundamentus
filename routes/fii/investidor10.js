@@ -82,8 +82,6 @@ function sendResponse(ticker, res) {
     })
     .catch(function (err) {
       let statusCode = err.statusCode || 500;
-      console.error(err);
-
       let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
 
       res.status(statusCode).send(errorBuilder.buildErrorResponse("Request failed", errorMessage));
