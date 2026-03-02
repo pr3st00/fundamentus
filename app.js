@@ -23,10 +23,9 @@ const app = express();
 app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(json());
+app.use(_json());
 app.use(createLogger());
 
-app.use(_json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(expressStatic(join(__dirname, 'public')));

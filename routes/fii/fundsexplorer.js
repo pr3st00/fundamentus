@@ -57,7 +57,7 @@ function sendResponse(ticker, res) {
       sector: formatter.formatText(p[p.findIndex(e => e == SEGMENT) + 1]),
       properties: properties || NA,
     };
-  })
+  }, options)
     .then(function (returnValue) {
       res.send(returnValue);
     })
@@ -66,7 +66,7 @@ function sendResponse(ticker, res) {
       let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
 
       res.status(statusCode).send(errorBuilder.buildErrorResponse("Request failed", errorMessage));
-    }, options);
+    });
 }
 
 export default router;
