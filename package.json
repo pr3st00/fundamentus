@@ -1,6 +1,7 @@
 {
   "name": "fundamentus",
-  "version": "1.0.4",
+  "type": "module",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",

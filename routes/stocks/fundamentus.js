@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const cheerio = require('cheerio');
-const crawler = require('../../lib/crawler.js');
-const errorBuilder = require('../../lib/errorBuilder.js');
+import { Router } from 'express';
+import { load } from 'cheerio';
+import crawler from '../../lib/crawler.js';
+import errorBuilder from '../../lib/errorBuilder.js';
+
+const router = Router();
 
 const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
 
@@ -33,7 +34,7 @@ function sendResponse(ticker, res) {
   }
 
   crawler(ticker, url, (ticker, html) => {
-    let $ = cheerio.load(html);
+    let $ = load(html);
     
     let spans = [];
 
@@ -68,4 +69,4 @@ function sendResponse(ticker, res) {
     });
 }
 
-module.exports = router;
+export default router;

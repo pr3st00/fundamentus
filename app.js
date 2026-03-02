@@ -1,29 +1,35 @@
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const loggerBuilder = require('./lib/loggerBuilder');
+import express, { json, static as expressStatic } from 'express';
+import { join } from 'path';
+import favicon from 'serve-favicon';
+import cookieParser from 'cookie-parser';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import pkg from 'body-parser';
+const { json: _json, urlencoded } = pkg;
+import { default as createLogger } from './lib/loggerBuilder.js';
 
 // Routes
-const fundsexplorer = require('./routes/fii/fundsexplorer');
-const investidor10 = require('./routes/fii/investidor10');
-const stock = require('./routes/stocks/fundamentus');
-const health = require('./routes/health');
+import fundsexplorer from './routes/fii/fundsexplorer.js';
+import investidor10 from './routes/fii/investidor10.js';
+import stock from './routes/stocks/fundamentus.js';
+import health from './routes/health.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = dirname(__filename);
 
 const app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(express.json());
-app.use(loggerBuilder.createLogger());
+app.use(json());
+app.use(createLogger());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(_json());
+app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressStatic(join(__dirname, 'public')));
 
 app.use('/fii', investidor10);
 app.use('/fii2', fundsexplorer);
@@ -48,4 +54,4 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

@@ -1,9 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const cheerio = require('cheerio');
-const crawler = require('../../lib/crawler.js');
-const formatter = require('../../lib/formatter.js');
-const errorBuilder = require('../../lib/errorBuilder.js');
+import { Router } from 'express';
+import { load } from 'cheerio';
+import crawler from '../../lib/crawler.js';
+import formatter from '../../lib/formatter.js';
+import { default as errorBuilder } from '../../lib/errorBuilder.js';
+
+const router = Router();
 
 const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
 
@@ -38,7 +39,7 @@ function sendResponse(ticker, res) {
   }
 
   crawler(ticker, url, (ticker, html) => {
-    let $ = cheerio.load(html);
+    let $ = load(html);
 
     let properties = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g, '').replace(/ /g, '');
 
@@ -66,7 +67,6 @@ function sendResponse(ticker, res) {
 
       res.status(statusCode).send(errorBuilder.buildErrorResponse("Request failed", errorMessage));
     }, options);
-
 }
 
-module.exports = router;
+export default router;
