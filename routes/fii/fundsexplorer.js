@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const cheerio = require('cheerio');
-const crawler = require('../../lib/crawler.js');
-const formatter = require('../../lib/formatter.js');
-const errorBuilder = require('../../lib/errorBuilder.js');
+import { Router } from 'express';
+import { load } from 'cheerio';
+import crawler from '../../lib/crawler.js';
+import formatter from '../../lib/formatter.js';
+import { default as errorBuilder } from '../../lib/errorBuilder.js';
 
-const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
+const router = Router();
+
+const BASE_URL = 'https://www.fundsexplorer.com.br/funds/';
 
 const CACHE_PREFIX = "fii";
 
@@ -29,7 +30,7 @@ router.get('/:ticker', function (req, res, next) {
 
 function sendResponse(ticker, res) {
   ticker = ticker.toLowerCase();
-  const url = baseUrl + ticker;
+  const url = BASE_URL + ticker;
 
   const options = {
     usecloudscraper: true,
@@ -38,7 +39,7 @@ function sendResponse(ticker, res) {
   }
 
   crawler(ticker, url, (ticker, html) => {
-    let $ = cheerio.load(html);
+    let $ = load(html);
 
     let properties = $("#fund-actives-chart-info-wrapper span").first().text().replace(/ativos/g, '').replace(/ /g, '');
 
@@ -56,7 +57,7 @@ function sendResponse(ticker, res) {
       sector: formatter.formatText(p[p.findIndex(e => e == SEGMENT) + 1]),
       properties: properties || NA,
     };
-  })
+  }, options)
     .then(function (returnValue) {
       res.send(returnValue);
     })
@@ -65,8 +66,7 @@ function sendResponse(ticker, res) {
       let errorMessage = statusCode == 404 ? "Ticker not found" : "Unexpected error";
 
       res.status(statusCode).send(errorBuilder.buildErrorResponse("Request failed", errorMessage));
-    }, options);
-
+    });
 }
 
-module.exports = router;
+export default router;

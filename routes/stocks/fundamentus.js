@@ -1,10 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const cheerio = require('cheerio');
-const crawler = require('../../lib/crawler.js');
-const errorBuilder = require('../../lib/errorBuilder.js');
+import { Router } from 'express';
+import { load } from 'cheerio';
+import crawler from '../../lib/crawler.js';
+import errorBuilder from '../../lib/errorBuilder.js';
 
-const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
+const router = Router();
+
+const BASE_URL = 'http://www.fundamentus.com.br/detalhes.php?papel=';
 
 const CACHE_PREFIX = "stock";
 const TICKER_SPAN_HEADER = "Papel";
@@ -23,7 +24,7 @@ router.get('/:ticker', function (req, res, next) {
 
 function sendResponse(ticker, res) {
   ticker = ticker.toLowerCase();
-  const url = baseUrl + ticker;
+  const url = BASE_URL + ticker;
   const cotacaoRegex = /Cota.*o/g;
 
   const options = {
@@ -33,7 +34,7 @@ function sendResponse(ticker, res) {
   }
 
   crawler(ticker, url, (ticker, html) => {
-    let $ = cheerio.load(html);
+    let $ = load(html);
     
     let spans = [];
 
@@ -68,4 +69,4 @@ function sendResponse(ticker, res) {
     });
 }
 
-module.exports = router;
+export default router;

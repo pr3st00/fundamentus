@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const cheerio = require('cheerio');
-const crawler = require('../../lib/crawler.js');
-const formatter = require('../../lib/formatter.js');
-const errorBuilder = require('../../lib/errorBuilder.js');
+import { Router } from 'express';
+import { load } from 'cheerio';
+import crawler from '../../lib/crawler.js';
+import formatter from '../../lib/formatter.js';
+import errorBuilder from '../../lib/errorBuilder.js';
 
-const baseUrl = 'https://investidor10.com.br/fiis/';
+const router = Router();
+
+const BASE_URL = 'https://investidor10.com.br/fiis/';
 
 const CACHE_PREFIX = "fii";
 
@@ -36,7 +37,7 @@ router.get('/:ticker', function (req, res, next) {
 
 function sendResponse(ticker, res) {
   ticker = ticker.toLowerCase();
-  const url = baseUrl + ticker;
+  const url = BASE_URL + ticker;
 
   const options = {
     usecloudscraper: true,
@@ -45,7 +46,7 @@ function sendResponse(ticker, res) {
   }
 
   crawler(ticker, url, (ticker, html) => {
-    let $ = cheerio.load(html);
+    let $ = load(html);
 
     let spans = [];
     let properties = 0;
@@ -88,4 +89,4 @@ function sendResponse(ticker, res) {
     });
 }
 
-module.exports = router;
+export default router;
