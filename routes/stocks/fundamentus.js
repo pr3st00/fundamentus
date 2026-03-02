@@ -5,7 +5,7 @@ import errorBuilder from '../../lib/errorBuilder.js';
 
 const router = Router();
 
-const baseUrl = 'http://www.fundamentus.com.br/detalhes.php?papel=';
+const BASE_URL = 'http://www.fundamentus.com.br/detalhes.php?papel=';
 
 const CACHE_PREFIX = "stock";
 const TICKER_SPAN_HEADER = "Papel";
@@ -24,7 +24,7 @@ router.get('/:ticker', function (req, res, next) {
 
 function sendResponse(ticker, res) {
   ticker = ticker.toLowerCase();
-  const url = baseUrl + ticker;
+  const url = BASE_URL + ticker;
   const cotacaoRegex = /Cota.*o/g;
 
   const options = {

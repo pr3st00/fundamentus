@@ -6,7 +6,7 @@ import { default as errorBuilder } from '../../lib/errorBuilder.js';
 
 const router = Router();
 
-const baseUrl = 'https://www.fundsexplorer.com.br/funds/';
+const BASE_URL = 'https://www.fundsexplorer.com.br/funds/';
 
 const CACHE_PREFIX = "fii";
 
@@ -30,7 +30,7 @@ router.get('/:ticker', function (req, res, next) {
 
 function sendResponse(ticker, res) {
   ticker = ticker.toLowerCase();
-  const url = baseUrl + ticker;
+  const url = BASE_URL + ticker;
 
   const options = {
     usecloudscraper: true,
