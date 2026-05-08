@@ -56,10 +56,10 @@ function sendResponse(ticker, res) {
     });
 
     $('span.count').each(function (i, e) {
-      properties += parseInt($(this).text());
+      properties += Number.parseInt($(this).text());
     });
 
-    let price = formatter.formatNumber(spans[spans.findIndex(e => e.match(PRICE)) + 1]);
+    let price = formatter.formatNumber(spans[spans.findIndex(e => e.match(new RegExp(`^${ticker.toUpperCase()}\\s*${PRICE}$`))) + 1]);
     let last_dividend = formatter.formatNumber(spans[spans.findIndex(e => e.match(LAST_DIVIDEND)) + 1]);
     let vacancy = formatter.formatNumber(spans[spans.findIndex(e => e.match(VACANCY)) + 1]);
     let tax = spans[spans.findIndex(e => e.match(TAX)) + 1].split("%")[0];
@@ -67,7 +67,7 @@ function sendResponse(ticker, res) {
     return {
       ticker: ticker,
       value: formatter.formatNumber(spans[spans.findIndex(e => e.match(VALUE)) + 1]),
-      price: formatter.formatNumber(spans[spans.findIndex(e => e.match(PRICE)) + 1]),
+      price: price,
       pvp: formatter.formatNumber(spans[spans.findIndex(e => e.match(PVP)) + 1]),
       dy: ((last_dividend / price) * 100).toFixed(2),
       dy12m: formatter.formatNumber(spans[spans.findIndex(e => e.match(DY)) + 1]),
